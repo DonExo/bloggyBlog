@@ -1,0 +1,134 @@
+[
+{
+    "model": "backend.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$bm5v8Ce9ao06$xfPJb/qY1ekio+vTjigyfKePhx6zBCbzthqL3gbSCOo=",
+        "last_login": "2020-02-27T21:20:31.347Z",
+        "is_superuser": true,
+        "username": "admin",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2020-02-27T20:01:11Z",
+        "first_name": "Admin",
+        "last_name": "Ovski",
+        "email": "admin@com.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "backend.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$kPJI67ivflXi$z0rahyS3xmAzG4OwQB47elPF2sRlJCj547rU6NKUEZI=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "user1",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-02-27T20:01:46Z",
+        "first_name": "User1",
+        "last_name": "Ovski",
+        "email": "user1@com.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "backend.user",
+    "pk": 3,
+    "fields": {
+        "password": "pass",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "user2",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-02-27T20:54:03Z",
+        "first_name": "User2",
+        "last_name": "Ovski",
+        "email": "user2@gmail.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "backend.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$iWOc0QCKwfOr$gRpN2T83NOwLBksJmcPSHOYvVx0RQpuvPKXgngqkEww=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "user3",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-02-27T21:08:21Z",
+        "first_name": "First",
+        "last_name": "Last",
+        "email": "first@last.com",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "backend.topic",
+    "pk": 1,
+    "fields": {
+        "title": "Topic #1"
+    }
+},
+{
+    "model": "backend.topic",
+    "pk": 2,
+    "fields": {
+        "title": "Topic #2"
+    }
+},
+{
+    "model": "backend.topic",
+    "pk": 3,
+    "fields": {
+        "title": "Topic #3"
+    }
+},
+{
+    "model": "backend.article",
+    "pk": 1,
+    "fields": {
+        "title": "Article 1",
+        "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetti",
+        "status": "draft",
+        "topic": 1,
+        "user": 1,
+        "created": "2020-02-27T20:59:03.292Z",
+        "modified": "2020-02-27T21:21:04.133Z"
+    }
+},
+{
+    "model": "backend.article",
+    "pk": 2,
+    "fields": {
+        "title": "Article 2",
+        "text": "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim venia",
+        "status": "published",
+        "topic": 1,
+        "user": 2,
+        "created": "2020-02-27T20:59:37.595Z",
+        "modified": "2020-02-27T21:20:58.847Z"
+    }
+},
+{
+    "model": "backend.article",
+    "pk": 3,
+    "fields": {
+        "title": "Article 3",
+        "text": "\"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expe",
+        "status": "draft",
+        "topic": 3,
+        "user": 3,
+        "created": "2020-02-27T21:00:18.599Z",
+        "modified": "2020-02-27T21:20:54.028Z"
+    }
+}
+]
