@@ -26,8 +26,8 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     status = models.CharField(max_length=255, choices=ARTICLE_STATUS_CHOICES, default='draft')
-    topic = models.ForeignKey(Topic, null=True, on_delete=models.SET_NULL, related_name='topic')
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='user')
+    topic = models.ForeignKey(Topic, null=True, on_delete=models.SET_NULL, related_name='articles')
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='articles')
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
