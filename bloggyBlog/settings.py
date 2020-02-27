@@ -40,11 +40,11 @@ INSTALLED_APPS = [
 
     # local apps
     'backend',
-    'frontend',
-    'api',
+    #'frontend',
+    #'api',
 
     # third party packages
-    'rest_framework'
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
