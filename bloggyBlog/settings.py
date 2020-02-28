@@ -41,8 +41,8 @@ INSTALLED_APPS = [
 
     # local apps
     'backend',
-    #'frontend',
-    #'api',
+    'frontend',
+    'api',
 
     # third party packages
     'rest_framework',
@@ -81,6 +81,8 @@ WSGI_APPLICATION = 'bloggyBlog.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+
+
 
 DATABASES = {
     'default': {
