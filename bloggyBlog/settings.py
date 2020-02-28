@@ -34,13 +34,13 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication', # enable this if you want session auth
+        # 'rest_framework.authentication.BasicAuthentication', # enable this if you want to auth with user+pass
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
+        # 'rest_framework.renderers.BrowsableAPIRenderer', # enable this if you need Browsable API
     ),
 }
 
@@ -61,6 +61,7 @@ INSTALLED_APPS = [
 
     # third party packages
     'rest_framework',
+
 ]
 
 MIDDLEWARE = [
