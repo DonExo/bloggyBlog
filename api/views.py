@@ -5,15 +5,15 @@ from rest_framework.response import Response
 from rest_framework import status, views, generics, viewsets, permissions
 
 from backend.models import User, Topic, Article
-from .serializers import UserSerializer, TopicSerializer, ArticleSerializer
+from .serializers import UserSerializer, TopicListSerializer, TopicDetailSerializer, ArticleSerializer
 from .permissions import IsOwnerOrAdmin
 
 
+# You can find below different approaches on creating the views for the API
 class UserDetailView(views.APIView):
     """
-    Retrieves a User instance and his Articles
+    Retrieves a User instance  and his Articles
     """
-
     def get_object(self, pk):
         try:
             return User.objects.get(pk=pk)
@@ -26,18 +26,19 @@ class UserDetailView(views.APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class TopicViewList(generics.ListAPIView):
+class TopicList(generics.ListAPIView):
     queryset = Topic.objects.all()
-    serializer_class = TopicSerializer
+    serializer_class = TopicListSerializer
 
     def get(self, request, *args, **kwargs):
-        serializer = TopicSerializer(self.get_queryset(), many=True)
+        context = {'request': request}
+        serializer = TopicListSerializer(self.get_queryset(), many=True, context=context)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class TopicViewDetail(generics.RetrieveAPIView):
+class TopicDetail(generics.RetrieveAPIView):
     queryset = Topic.objects.all()
-    serializer_class = TopicSerializer
+    serializer_class = TopicDetailSerializer
 
     def get_object(self, pk):
         try:
@@ -46,8 +47,9 @@ class TopicViewDetail(generics.RetrieveAPIView):
             raise Http404
 
     def get(self, request, pk):
+        context = {'request': request}
         topic = self.get_object(pk)
-        serializer = TopicSerializer(topic)
+        serializer = TopicDetailSerializer(topic, context=context)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

@@ -1,9 +1,10 @@
-from backend.models import User, Article, Topic
-
 from rest_framework import serializers
 from rest_framework import fields
 
+from backend.models import User, Article, Topic
 
+
+# USER-related serializers
 class UserArticleSerializer(serializers.ModelSerializer):
     topic = serializers.CharField()
 
@@ -31,8 +32,9 @@ class UserSerializer(serializers.ModelSerializer):
         return user.articles.all().count()
 
 
-class ArticleSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(read_only=True)
+# ARTICLE-related serializers
+class ArticleSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.HyperlinkedRelatedField(view_name='user-detail', read_only=True)
     created = serializers.SerializerMethodField()
 
     class Meta:
@@ -46,9 +48,6 @@ class ArticleSerializer(serializers.ModelSerializer):
         super(ArticleSerializer, self).__init__(*args, **kwargs)
         self.request = self.context.get('request', None)
         self.user = self.request.user
-
-    def get_user(self, article):
-        return article.user
 
     def get_created(self, article):
         return article.created.strftime("%Y-%d-%m %H:%M")
@@ -64,23 +63,38 @@ class ArticleSerializer(serializers.ModelSerializer):
         post = Article.objects.create(**validated_data)
         return post
 
-class TopicArticleSerializer(serializers.ModelSerializer):
 
+# TOPIC-related Serializers
+class TopicArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ('title', 'text', 'status')
 
 
-class TopicSerializer(serializers.ModelSerializer):
-    articles_count = fields.SerializerMethodField()
-    articles = fields.SerializerMethodField()
+class TopicDetailSerializer(serializers.HyperlinkedModelSerializer):
+    articles_count = serializers.SerializerMethodField()
+    articles = serializers.SerializerMethodField()
+    url = serializers.HyperlinkedIdentityField(view_name='topic-detail', read_only=True)
 
     class Meta:
         model = Topic
-        fields = ('title', 'articles_count', 'articles')
+        fields = ('title', 'url', 'articles_count', 'articles')
 
     def get_articles_count(self, topic):
         return topic.articles.all().count()
 
     def get_articles(self, topic):
         return TopicArticleSerializer(topic.articles.all(), many=True).data
+
+
+class TopicListSerializer(serializers.HyperlinkedModelSerializer):
+    articles_count = serializers.SerializerMethodField()
+    url = serializers.HyperlinkedIdentityField(view_name='topic-detail', read_only=True)
+
+    class Meta:
+        model = Topic
+        fields = ('title', 'url', 'articles_count')
+
+    def get_articles_count(self, topic):
+        return topic.articles.all().count()
+

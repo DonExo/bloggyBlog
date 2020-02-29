@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,13 +36,18 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication', # enable this if you want session auth
-        # 'rest_framework.authentication.BasicAuthentication', # enable this if you want to auth with user+pass
+        'rest_framework.authentication.SessionAuthentication',  # enable this if you want session auth
+        'rest_framework.authentication.BasicAuthentication',  # enable this if you want to auth with user+pass
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        # 'rest_framework.renderers.BrowsableAPIRenderer', # enable this if you need Browsable API
+        'rest_framework.renderers.BrowsableAPIRenderer',  # enable this if you need Browsable API
     ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),  # Token expiration
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Refresh token expiration
 }
 
 # Application definition
@@ -61,7 +67,6 @@ INSTALLED_APPS = [
 
     # third party packages
     'rest_framework',
-
 ]
 
 MIDDLEWARE = [
