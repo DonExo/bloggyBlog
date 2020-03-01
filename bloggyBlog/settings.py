@@ -36,12 +36,12 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',  # enable this if you want session auth
-        'rest_framework.authentication.BasicAuthentication',  # enable this if you want to auth with user+pass
+        # 'rest_framework.authentication.SessionAuthentication',  # enable this if you want session auth
+        # 'rest_framework.authentication.BasicAuthentication',  # enable this if you want to auth with user+pass
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',  # enable this if you need Browsable API
+        # 'rest_framework.renderers.BrowsableAPIRenderer',  # enable this if you need Browsable API
     ),
 }
 
