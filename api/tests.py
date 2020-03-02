@@ -25,13 +25,13 @@ class TestApiUser(APITestCase):
     def test_get_request_on_user_endpoint(self):
         response = self.client.get(self.user_detail_endpoint(self.user.pk))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        items_in_response = ['first_name', 'last_name', 'email', 'post_count', 'posts']
+        items_in_response = ['first_name', 'last_name', 'email', 'articles_count', 'articles']
         for item in items_in_response:
             self.assertTrue(item in response.data)
 
     def test_get_articles_for_user(self):
         response = self.client.get(self.user_detail_endpoint(self.user.pk))
-        self.assertEqual(response.data['post_count'], 3)
+        self.assertEqual(response.data['articles_count'], 3)
         expected = [
             {
                 'title': 'Article title 1',
@@ -49,7 +49,7 @@ class TestApiUser(APITestCase):
                 'topic': 'Topic title 1'
             }
         ]
-        posts = [dict(item) for item in response.data['posts']]
+        posts = [dict(item) for item in response.data['articles']]
         self.assertListEqual(expected, posts)
 
     def test_post_put_patch_delete_request_on_user_endpoint(self):
@@ -138,9 +138,41 @@ class TestApiTopic(APITestCase):
         response = self.client.delete(self.topic_detail_endpoint(self.topic1.pk))
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def test_post_request_on_topic_list_endpoint(self):
+    def test_create_topic_with_regular_user(self):
+        self.client.force_authenticate(self.user)
+        data = {
+            "title": "Random title"
+        }
+        response = self.client.post(self.topic_list_endpoint(), data=data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_topic_with_admin_user(self):
+        user = User.objects.create_superuser(username='admin', password='admins', email='admin@gom.com')
+        self.client.force_authenticate(user)
+        data = {
+            "title": "Random title"
+        }
+        response = self.client.post(self.topic_list_endpoint(), data=data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_topic_with_admin_user_but_missing_data(self):
+        user = User.objects.create_superuser(username='admin', password='admins', email='admin@gom.com')
+        self.client.force_authenticate(user)
         response = self.client.post(self.topic_list_endpoint())
-        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue('title' in response.data)
+        self.assertEqual(["This field is required."], response.json()['title'])
+
+    def test_create_topic_that_already_exists(self):
+        user = User.objects.create_superuser(username='admin', password='admins', email='admin@gom.com')
+        self.client.force_authenticate(user)
+        data = {
+            "title": "Topic title 1" # this topic already exists in the setUpTestData()
+        }
+        response = self.client.post(self.topic_list_endpoint(), data=data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue('title' in response.json())
+        self.assertEqual(["Topic with given title already exists!"], response.json()['title'])
 
     def test_get_non_existing_topic(self):
         respose = self.client.get(self.topic_detail_endpoint(9999))

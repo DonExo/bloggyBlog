@@ -18,17 +18,17 @@ class UserArticleSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
-    posts = fields.SerializerMethodField()
-    post_count = fields.SerializerMethodField()
+    articles = fields.SerializerMethodField()
+    articles_count = fields.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'post_count', 'posts')
+        fields = ('first_name', 'last_name', 'username', 'email', 'articles_count', 'articles')
 
-    def get_posts(self, user):
+    def get_articles(self, user):
         return UserArticleSerializer(user.articles.all(), many=True).data
 
-    def get_post_count(self, user):
+    def get_articles_count(self, user):
         return user.articles.all().count()
 
 
@@ -97,4 +97,10 @@ class TopicListSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_articles_count(self, topic):
         return topic.articles.all().count()
+
+    def validate_title(self, title):
+        exists = Topic.objects.filter(title=title).exists()
+        if exists:
+            raise serializers.ValidationError("Topic with given title already exists!")
+        return title
 
