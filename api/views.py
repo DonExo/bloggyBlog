@@ -1,9 +1,11 @@
 import json
 from django.db.models import Q
 from django.http import Http404
+from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
 
 from rest_framework.response import Response
-from rest_framework import status, views, generics, viewsets, permissions
+from rest_framework import status, views, generics, viewsets, permissions, serializers
 
 from backend.models import User, Topic, Article
 from .serializers import UserSerializer, TopicListSerializer, TopicDetailSerializer, ArticleSerializer
@@ -97,3 +99,15 @@ class ArticleViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [permissions.IsAuthenticated]
         return [permission() for permission in permission_classes]
+
+    @action(methods=['get'], detail=True, url_path='publish', url_name='publish')
+    def publish_article(self, request, pk=None):
+        article = get_object_or_404(Article, pk=pk)
+        if not request.user.is_staff:
+            return Response(data={"detail": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
+
+        if article.is_published():
+            raise serializers.ValidationError({"detail": "Article '{}' is already published.".format(article)})
+
+        article.publish()
+        return Response(data={"detail": "Article '{}' has been successfully published!".format(article)}, status=status.HTTP_200_OK)

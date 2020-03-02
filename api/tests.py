@@ -368,6 +368,33 @@ class TestApiArticle(APITestCase):
         article_1.refresh_from_db()
         self.assertEqual(article_1.title, "Article title 1")
 
+    def test_publish_article_with_anonymous_user(self):
+        article2 = Article.objects.get(pk=2)
+        assert article2.status == "draft"
+        response = self.client.get("".join([self.article_detail_endpoint(article2.pk), "publish/"]))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual('Authentication credentials were not provided.', response.json()['detail'])
+
+    def test_publish_article_with_non_admin_user(self):
+        new_user = User.objects.create_user(username='username2', email='email2@gom.com', password='password2')
+        self.client.force_authenticate(new_user)
+        article2 = Article.objects.get(pk=2)
+        assert article2.status == "draft"
+        response = self.client.get("".join([self.article_detail_endpoint(article2.pk), "publish/"]))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual('You do not have permission to perform this action.', response.json()['detail'])
+
+    def test_publish_article_with_admin_user(self):
+        admin_user = User.objects.create_superuser(username='username2', email='email2@gom.com', password='password2')
+        self.client.force_authenticate(admin_user)
+        article2 = Article.objects.get(pk=2)
+        assert article2.status == "draft"
+        response = self.client.get("".join([self.article_detail_endpoint(article2.pk), "publish/"]))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual("Article '{}' has been successfully published!".format(article2), response.json()['detail'])
+        article2.refresh_from_db()
+        self.assertTrue(article2.is_published())
+
 
 class TestApiAuth(APITestCase):
     @classmethod

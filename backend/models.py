@@ -33,3 +33,10 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    def is_published(self):
+        return self.status == 'published'
+
+    def publish(self):
+        self.status = 'published'
+        self.save()
