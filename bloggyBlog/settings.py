@@ -26,7 +26,7 @@ SECRET_KEY = 'a-ip#oc)nyob)zj35%u03q6nyg(n#s4n@d9&e4!ly!#csn*r4k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 AUTH_USER_MODEL = 'backend.User'
 
@@ -67,6 +67,7 @@ INSTALLED_APPS = [
 
     # third party packages
     'rest_framework',
+    'schema_graph',
 ]
 
 MIDDLEWARE = [
