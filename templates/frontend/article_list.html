@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+
+{% block content %}
+
+    <h2>List view!</h2>
+
+    {% for article in object_list %}
+        <div class="post" style="border: 1px solid black; margin: 2px; padding: 5px;">
+            <h2><a href="{% url 'frontend:article-detail' article.pk %}">{{ article.title }}</a></h2>
+            <p>{{ article.text|linebreaksbr }}</p>
+             <div class="date">
+                {{ article.created|naturaltime }}
+            </div>
+            <small>{{ article.status }}</small>
+        </div>
+    {% endfor %}
+
+
+    <p>Wanna create new article? <a href="{% url 'frontend:article-create' %}">Click here!</a></p>
+
+{% endblock %}

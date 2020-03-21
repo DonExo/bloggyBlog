@@ -50,7 +50,6 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Refresh token expiration
 }
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,6 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     # local apps
     'backend',
@@ -85,7 +85,7 @@ ROOT_URLCONF = 'bloggyBlog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

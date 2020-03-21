@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
 
 from .utils import ARTICLE_STATUS_CHOICES
 
@@ -40,3 +41,6 @@ class Article(models.Model):
     def publish(self):
         self.status = 'published'
         self.save()
+
+    def get_absolute_url(self):
+        return reverse('frontend:article-detail', kwargs={'pk': self.pk})

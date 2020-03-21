@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+
+{% block content %}
+
+    <h2>Detail view!</h2>
+
+    <h3>{{ object.title }}</h3>
+    <h4>{{ object.text }}</h4>
+    <h4>{{ object.topic }}</h4>
+    <h4>{{ object.user }}</h4>
+
+    <h5><a href="{% url 'frontend:article-edit' object.pk %}">Edit article</a></h5>
+    <h5><a href="{% url 'frontend:article-list' %}">Back to list</a></h5>
+
+
+
+{% endblock %}
