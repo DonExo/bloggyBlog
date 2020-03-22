@@ -30,6 +30,8 @@ ALLOWED_HOSTS = ["*"]
 
 AUTH_USER_MODEL = 'backend.User'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
@@ -52,7 +54,7 @@ SIMPLE_JWT = {
 
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -60,15 +62,25 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    # local apps
-    'backend',
-    'frontend',
-    'api',
+    # needed for django-registration-redux
+    'django.contrib.sites',
+    'registration',
+    'django.contrib.admin',
 
     # third party packages
     'rest_framework',
     'schema_graph',
+
+    # local apps
+    'backend',
+    'frontend',
+    'api',
 ]
+
+# django-registration-redux stuff
+ACCOUNT_ACTIVATION_DAYS = 1
+# REGISTRATION_AUTO_LOGIN = True # auto-login user after clicking activation link
+LOGIN_REDIRECT_URL = '/articles/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

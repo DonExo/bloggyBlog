@@ -1,21 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Bloggy bloggyasd</title>
+    {% block title %}
+        <title>BloggyBlog</title>
+    {% endblock %}
+
+    {% block meta %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endblock %}
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 </head>
-<body>
+<body class="override">
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/mymodule/">MyDjangoApp</a>
+            </div>
+
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                        <li><a href="#">Hi {{ user }}</a></li>
+                        <li><a href={% url 'auth_logout' %}>Logout</a></li>
+                    {% else %}
+                        <li><a href={% url 'auth_login' %}>Log-in</a></li>
+                        <li><a href={% url 'registration_register' %}>Register</a></li>
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+    </nav>
 
 
-{% if request.user.is_superuser %} <h5><a href="/admin/">admin</a></h5> {% endif %}
+    <div class="container">
+        <div class="row">
+            <h3>Go to <a href="{% url 'frontend:article-list' %}">Articles</a></h3>
+        </div>
 
+        <div class="row">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
 
-<h2>Welcome to bloggyBlog!</h2>
-
-
-{% block content %}
-    Go to <a href="{% url 'frontend:article-list' %}">Articles</a>
-{% endblock %}
-
+    <footer>
+        <div class="container">
+            <div class="row well ml-t">
+                <div class="col-lg-8 col-md-8">
+                    <h4>Developed by: <a href="#" target="_blank">DonExo</a></h4>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <p class="m-t">Copyright &copy 2020</p>
+                    <p>All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

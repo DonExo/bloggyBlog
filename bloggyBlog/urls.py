@@ -10,7 +10,8 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 
-    # path('login', )
+    # Django-registration-redux MAGIC
+    path('accounts/', include('registration.backends.default.urls')),
 
 
     path("schema/", Schema.as_view()),
