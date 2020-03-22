@@ -16,9 +16,10 @@ class TopicAdmin(admin.ModelAdmin):
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['title', 'topic', 'text', 'user', 'status']
+    list_display = ['title', 'topic', 'slug', 'text', 'user', 'status']
     list_filter = ['status']
     search_fields = ['title', 'text', 'user']
+    readonly_fields = ('slug', )
 
 
 admin.site.register(User, CustomUserAdmin)

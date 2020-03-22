@@ -15,7 +15,6 @@ class ArticleModelForm(forms.ModelForm):
             # raise forms.ValidationError("Ne moze so 'ab'!")
         return title
 
-    def clean_topic(self):
-        topic = self.cleaned_data['topic']
-        print(topic)
-        return topic
+
+class ArticleEditModelForm(ArticleModelForm):
+    title = forms.CharField(disabled=True)

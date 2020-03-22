@@ -2,11 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bloggy bloggy</title>
+    <title>Bloggy bloggyasd</title>
 </head>
 <body>
 
+
+{% if request.user.is_superuser %} <h5><a href="/admin/">admin</a></h5> {% endif %}
+
+
+<h2>Welcome to bloggyBlog!</h2>
+
+
 {% block content %}
+    Go to <a href="{% url 'frontend:article-list' %}">Articles</a>
 {% endblock %}
 
 </body>

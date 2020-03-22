@@ -6,12 +6,14 @@
 
     <h2>Detail view!</h2>
 
-    <h3>{{ object.title }}</h3>
-    <h4>{{ object.text }}</h4>
-    <h4>{{ object.topic }}</h4>
-    <h4>{{ object.user }}</h4>
+    Title: {{ object.title }} <br/>
+    Text: {{ object.text }} <br/>
+    Topic: {{ object.topic }} <br/>
+    User: {{ object.user }} <br/>
 
-    <h5><a href="{% url 'frontend:article-edit' object.pk %}">Edit article</a></h5>
+
+
+    {% if request.user == object.user %}<h5><a href="{% url 'frontend:article-edit' object.slug %}">Edit article</a></h5>{% endif %}
     <h5><a href="{% url 'frontend:article-list' %}">Back to list</a></h5>
 
 

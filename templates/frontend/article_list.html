@@ -6,9 +6,11 @@
 
     <h2>List view!</h2>
 
-    {% for article in object_list %}
+    <h1>{{ donald }}</h1>
+
+    {% for article in object_list %}  {# for article in ficka #}
         <div class="post" style="border: 1px solid black; margin: 2px; padding: 5px;">
-            <h2><a href="{% url 'frontend:article-detail' article.pk %}">{{ article.title }}</a></h2>
+            <h2><a href="{% url 'frontend:article-detail' article.slug %}">{{ article.title }}</a></h2>
             <p>{{ article.text|linebreaksbr }}</p>
              <div class="date">
                 {{ article.created|naturaltime }}

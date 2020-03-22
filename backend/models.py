@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.template.defaultfilters import slugify
 from django.urls import reverse
 
 from .utils import ARTICLE_STATUS_CHOICES
@@ -26,6 +29,7 @@ class Topic(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
+    slug = models.SlugField(max_length=255, unique=True)
     status = models.CharField(max_length=255, choices=ARTICLE_STATUS_CHOICES, default='draft')
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name='articles')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='articles')
@@ -35,6 +39,13 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, **kwargs):
+        if not self.id:
+            # Let's create a unique slug
+            date_time_object = datetime.utcnow().strftime("%d%m%Y%H%M%S")
+            self.slug = "-".join([slugify(self.title), date_time_object])
+        super().save(**kwargs)
+
     def is_published(self):
         return self.status == 'published'
 
@@ -43,4 +54,4 @@ class Article(models.Model):
         self.save()
 
     def get_absolute_url(self):
-        return reverse('frontend:article-detail', kwargs={'pk': self.pk})
+        return reverse('frontend:article-detail', kwargs={'slug': self.slug})
